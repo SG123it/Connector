@@ -8,10 +8,14 @@ project(${P_NAME} VERSION ${P_VER})
 set(src_files
     src/main.cpp
     
-    src/Configuration_worker.cpp
-    src/Synchronization_logic.cpp
+    src/CFG_worker.cpp
+    src/Sync_logic.cpp
 )
-include_directories(headers)
+include_directories(
+    headers
+
+    include/JSON/single_include
+)
 
 add_executable(${P_NAME} ${src_files})
 target_compile_definitions(${P_NAME} PRIVATE VERSION=${P_VER})
