@@ -7,15 +7,12 @@
 int main(int argc, char* argv[]) {
     std::filesystem::path configuration_path = "-";
     bool configuration_found = false;
-
-    if (argc > 0) {
+    if (argc > 1) {
 
         if(CFG_worker::CheckConfigurationFile(argv[1])) {
             configuration_path = argv[1];
             configuration_found = true;
         }
-        else return 1;
-
     }
 
     std::cout << "\n-----------------------------\n";
