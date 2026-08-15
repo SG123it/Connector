@@ -142,7 +142,7 @@ CFG_worker::Configuration_Data CFG_worker::GetConfigurationData(std::filesystem:
     return Return_data;
 }
 
-void CFG_worker::InteractiveConfigurationCreating()
+CFG_worker::Configuration_Data CFG_worker::InteractiveConfigurationCreating()
 {
     int count_of_child_objects = 0;
     Configuration_Data Data;
@@ -203,4 +203,5 @@ void CFG_worker::InteractiveConfigurationCreating()
     }
 
     WriteToCFGFile(Data);
+    return Data;
 }

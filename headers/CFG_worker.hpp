@@ -19,7 +19,7 @@ public:
     static Configuration_Data GetConfigurationData(std::filesystem::path path);
 
     //Запуск интерактивного создания конфигурации
-    static void InteractiveConfigurationCreating();
+    static Configuration_Data InteractiveConfigurationCreating();
 
     //Проверить конфигурационный файл на соответствие стандарту
     static bool CheckConfigurationFile(std::filesystem::path path);
