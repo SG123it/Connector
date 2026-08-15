@@ -1,29 +1,31 @@
 <h2><b>
 <ul>
 
-<li> Формат родительского конфигурационного файла:
+<li> Название конфигурационного файла: ConnectorConfig.jccf (json connector configuration file)
+<li> Стандарт родительского конфигурационного файла:
 
 
-    Config {
-        type : "Parent"
-        path : "Path to the parent path"
+    "Child": {
+        "0": [
+            path : <Path to child folder>
+        ]
+        ...
+    },
+    "DateOfLastChange": {
+        "0": [
+            path: path to .jccf config
+            date: date #time_since_epoch
+        ]
+        ...
+    },
+    "path": <Path to parent folder>,
+    "type": "Parent"
 
-        Child {
-            1 : "Path to the child element"
-            ...
-        }
-    }
-
-    Data {
-
-    }
-<li> Формат дочернего конфигурационного файла:
+<li> Стандарт дочернего конфигурационного файла:
 
 
-    Config {
-        type : "Child"
-        path : "Path to the parent path"
-    }
+    "path": <Path to parent folder>,
+    "type": "Child"
 
 </ul>
 </b></h2>

@@ -1,6 +1,9 @@
 #include <iostream>
 #include <filesystem>
 
+#include <CFG_worker.hpp>
+#include <Sync_logic.hpp>
+
 int main(int argc, char* argv[]) {
     for (int i = 0; i < argc; i++) {
         std::cout << "Argument: " << argv[i] << std::endl;
