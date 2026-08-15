@@ -40,7 +40,6 @@ bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
             return false;
         }
     }
-    if (JsonData.count("DateOfLastChange") == 0 ) return false;
 
 
 
@@ -63,7 +62,6 @@ bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
 bool CFG_worker::WriteToCFGFile(Configuration_Data data)
 {
     nlohmann::json JsonData;
-    std::vector<std::filesystem::path> DatesOfFiles;
 
     std::filesystem::path path = data.path;
     path /= Standart_CFG_Name;
@@ -80,18 +78,6 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
     if (!File.is_open()) {
         std::cout << "Error: Unable to open file: " << path.string() << std::endl;
         return false;
-    }
-
-    for (auto& el : std::filesystem::recursive_directory_iterator(path.parent_path())) {
-        if (el.is_directory()) continue;
-        
-        DatesOfFiles.push_back(el.path());
-    }
-    for (int i = 0; i < DatesOfFiles.size(); i++) {
-        if (DatesOfFiles[i].filename().string() == Standart_CFG_Name) continue;
-
-        JsonData["DateOfLastChange"][std::to_string(i)]["path"] = DatesOfFiles[i];
-        JsonData["DateOfLastChange"][std::to_string(i)]["date"] = static_cast<long long int>(std::filesystem::last_write_time(DatesOfFiles[i]).time_since_epoch().count());
     }
 
     //-----------------------------
@@ -150,11 +136,6 @@ CFG_worker::Configuration_Data CFG_worker::GetConfigurationData(std::filesystem:
         for (int i = 0; i < JsonData["Child"].size(); i++) {
             Return_data.Child_objects.push_back(JsonData["Child"][std::to_string(i)]["path"]);
             std::cout << "New child object detected: " << JsonData["Child"][std::to_string(i)]["path"] << std::endl;
-        }
-
-        for (int i = 0; i < JsonData["DateOfLastChange"].size(); i++) {
-            Return_data.DateOfLastChange[JsonData["DateOfLastChange"][std::to_string(i)]["path"]] = static_cast<long long int>(JsonData["DateOfLastChange"][std::to_string(i)]["date"]);
-            std::cout << "New time point detected: " << static_cast<long long int>(JsonData["DateOfLastChange"][std::to_string(i)]["date"]) << "(" << JsonData["DateOfLastChange"][std::to_string(i)]["path"] << ")" << std::endl;
         }
     }
 

@@ -11,13 +11,6 @@
         ]
         ...
     },
-    "DateOfLastChange": {
-        "0": [
-            path: path to .jccf config
-            date: date #time_since_epoch
-        ]
-        ...
-    },
     "path": <Path to parent folder>,
     "type": "Parent"
 

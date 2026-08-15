@@ -18,7 +18,6 @@ public:
         std::string path = "";
 
         std::vector<std::string> Child_objects;
-        std::unordered_map<std::filesystem::path, long long int> DateOfLastChange;
     };
     
     //Получить данные из конфигурационного файла
