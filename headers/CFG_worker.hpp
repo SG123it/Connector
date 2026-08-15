@@ -20,12 +20,16 @@ public:
 
     //Запуск интерактивного создания конфигурации
     static void InteractiveConfigurationCreating();
-private:
-    inline static const std::string CFG_Name = "ConnectorConfig.jccf";
 
     //Проверить конфигурационный файл на соответствие стандарту
     static bool CheckConfigurationFile(std::filesystem::path path);
 
+private:
+    inline static const std::string CFG_Name = "ConnectorConfig.jccf";
+
     //Записать конфигурацию в конфигурационный файл
     static bool WriteToCFGFile(Configuration_Data data);
+
+    static std::string TransformToLower(std::string text);
+
 };

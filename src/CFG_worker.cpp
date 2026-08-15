@@ -6,13 +6,26 @@
 
 bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
 {
-    
-    std::ifstream FileRead(path);
-    nlohmann::json JsonData;
-    if (!std::filesystem::exists(path)) {
-        std::cout << "Error: Unable to find path: " << path.string() << std::endl;
+    if (!std::filesystem::exists(path) || std::filesystem::is_directory(path)) {
+        std::cout << "Error: Unable to find path or path object is directory: " << path.string() << std::endl;
         return false;
     }
+    else {
+        std::cout << "The file has been successfully found: " << path.string() << std::endl;
+    }
+
+    if(TransformToLower(path.extension().string()) != ".jccf") {
+        std::cout << "Error: Extension != .jccf: " << path.string() << std::endl;
+        return false;
+    }
+    else {
+        std::cout << "Extension: .jccf: " << path.string() << std::endl;
+    }
+
+    //--------------------------
+
+    std::ifstream FileRead(path);
+    nlohmann::json JsonData;
     if (!FileRead.is_open()) {
         std::cout << "Error: Unable to open file: " << path.string() << std::endl;
         return false;
@@ -67,7 +80,7 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
         }
         for (int i = 0; i < paths.size(); i++) {
             if (paths[i].filename().string() == CFG_Name) continue;
-            
+
             JsonData["DateOfLastChange"][std::to_string(i)]["path"] = paths[i];
             JsonData["DateOfLastChange"][std::to_string(i)]["date"] = static_cast<long long int>(std::filesystem::last_write_time(paths[i]).time_since_epoch().count());
         }
@@ -80,6 +93,15 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
     File.close();
 
     return true;
+}
+
+std::string CFG_worker::TransformToLower(std::string text)
+{
+    for(int i = 0; i < text.size(); i++) {
+        if (text[i] >= 'A' && text[i] <= 'Z') text[i] += 32;
+    }
+
+    return text;
 }
 
 CFG_worker::Configuration_Data CFG_worker::GetConfigurationData(std::filesystem::path path)
