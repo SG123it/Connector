@@ -50,7 +50,7 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
     nlohmann::json JsonData;
 
     std::filesystem::path path = data.path;
-    path /= CFG_Name;
+    path /= Standart_CFG_Name;
     if (std::filesystem::exists(path)) {
         std::cout << "\nWARNING! CFG file already exist. Remove...\n";
         std::filesystem::remove(path);
@@ -79,7 +79,7 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
             paths.push_back(el.path());
         }
         for (int i = 0; i < paths.size(); i++) {
-            if (paths[i].filename().string() == CFG_Name) continue;
+            if (paths[i].filename().string() == Standart_CFG_Name) continue;
 
             JsonData["DateOfLastChange"][std::to_string(i)]["path"] = paths[i];
             JsonData["DateOfLastChange"][std::to_string(i)]["date"] = static_cast<long long int>(std::filesystem::last_write_time(paths[i]).time_since_epoch().count());
@@ -204,4 +204,10 @@ CFG_worker::Configuration_Data CFG_worker::InteractiveConfigurationCreating()
 
     WriteToCFGFile(Data);
     return Data;
+}
+
+std::filesystem::path CFG_worker::Configuration_Data::GetFullCFGPath(std::filesystem::path path)
+{
+    std::filesystem::path return_value = path / Standart_CFG_Name;
+    return return_value;
 }

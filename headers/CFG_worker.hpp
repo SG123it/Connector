@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 #include <filesystem>
 #include <vector>
@@ -7,7 +9,11 @@
 
 class CFG_worker {
 public:
-    struct Configuration_Data {
+    inline static const std::string Standart_CFG_Name = "ConnectorConfig.jccf";
+    class Configuration_Data {
+    public:
+        std::filesystem::path GetFullCFGPath(std::filesystem::path path);
+
         std::string type = "";
         std::string path = "";
 
@@ -25,7 +31,6 @@ public:
     static bool CheckConfigurationFile(std::filesystem::path path);
 
 private:
-    inline static const std::string CFG_Name = "ConnectorConfig.jccf";
 
     //Записать конфигурацию в конфигурационный файл
     static bool WriteToCFGFile(Configuration_Data data);
