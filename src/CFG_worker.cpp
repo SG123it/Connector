@@ -41,21 +41,6 @@ bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
         }
     }
 
-
-
-    if(JsonData["type"] == "Parent") {
-        std::cout << "\nChild objects checking...";
-        std::cout << "\n------------\n";
-        for (int i = 0; i < JsonData["Child"].size(); i++) {
-            std::string ChildItemPath = JsonData["Child"][std::to_string(i)]["path"];
-            if (!CheckConfigurationFile(ChildItemPath)) {
-                std::cout << "\nERROR! Configuration file of child item have an error!: " << ChildItemPath;
-                return false;
-            } 
-        }
-
-    }
-
     return true;
 }
 
@@ -203,17 +188,6 @@ CFG_worker::Configuration_Data CFG_worker::InteractiveConfigurationCreating()
     }
 
     WriteToCFGFile(Data);
-
-    std::cout << "\nCreating configuration files of child objects...";
-    for (auto el : Data.Child_objects) {
-        Configuration_Data ChildObjects_CFG_Data;
-
-        ChildObjects_CFG_Data.type = "Child";
-        ChildObjects_CFG_Data.path = el;
-
-        WriteToCFGFile(ChildObjects_CFG_Data);
-    }
-
     return Data;
 }
 
