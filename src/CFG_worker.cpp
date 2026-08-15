@@ -51,17 +51,17 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
     std::filesystem::path path = data.path;
     path /= Standart_CFG_Name;
     if (std::filesystem::exists(path)) {
-        std::cout << "\nWARNING! CFG file already exist. Remove...\n";
+        std::cout << "WARNING! CFG file already exist. Remove..." << std::endl << std::endl;
         std::filesystem::remove(path);
     }
     
     std::ofstream File(path);
     if (!std::filesystem::exists(path.parent_path())) {
-        std::cout << "Error: Unable to find path: " << path.string() << std::endl;
+        std::cout << "Error: Unable to find path: " << path.string() << std::endl << std::endl;
         return false;
     }
     if (!File.is_open()) {
-        std::cout << "Error: Unable to open file: " << path.string() << std::endl;
+        std::cout << "Error: Unable to open file: " << path.string() << std::endl << std::endl;
         return false;
     }
 
@@ -103,7 +103,7 @@ CFG_worker::Configuration_Data CFG_worker::GetConfigurationData(std::filesystem:
             std::filesystem::remove(path);
         }
 
-        throw(std::runtime_error("An error occurred while scanning."));
+        throw(std::runtime_error("An error occurred while scanning.\n\n"));
     }
 
     std::ifstream FileRead(path);
@@ -132,18 +132,18 @@ CFG_worker::Configuration_Data CFG_worker::InteractiveConfigurationCreating()
     int count_of_child_objects = 0;
     Configuration_Data Data;
 
-    std::cout << "You have started creating a configuration file.";
+    std::cout << "You have started creating a configuration file." << std::endl;
 
     Data.type = "Parent";
 
     while(true) {
         std::string raw_path = "";
 
-        std::cout << "\nPlease enter path to the folder: ";
+        std::cout << "Please enter path to the folder: " << std::endl;
         try {
             std::getline(std::cin, raw_path);
         } catch(...) {
-            std::cout << "\n\nSomething went wrong! Restart...";
+            std::cout << "Something went wrong! Restart..." << std::endl << std::endl;
             continue;
         }
 
@@ -156,13 +156,13 @@ CFG_worker::Configuration_Data CFG_worker::InteractiveConfigurationCreating()
     while(true) {
         int count = 0;
 
-        std::cout << "\nPlease enter count of child objects: ";
+        std::cout << "Please enter count of child objects: " << std::endl;
         try {
             std::cin >> count;
             std::cin.clear();
             std::cin.ignore();
         } catch(...) {
-            std::cout << "\n\nSomething went wrong! Restart...";
+            std::cout << "Something went wrong! Restart..." << std::endl << std::endl;
             continue;
         }
 
@@ -173,12 +173,12 @@ CFG_worker::Configuration_Data CFG_worker::InteractiveConfigurationCreating()
     for (int i = 0; i < count_of_child_objects; i++) {
         std::string path = "";
 
-        std::cout << "\nPlease enter path of #" << i + 1 << " child object folder\n>>> ";
+        std::cout << "Please enter path of #" << i + 1 << " child object folder\n>>> " << std::endl;
 
         try {
             std::getline(std::cin, path);
         } catch(...) {
-            std::cout << "\n\nSomething went wrong! Restart...";
+            std::cout << "Something went wrong! Restart..." << std::endl << std::endl;
             continue;
         }
 

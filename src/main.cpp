@@ -28,6 +28,15 @@ int main(int argc, char* argv[]) {
         data = CFG_worker::InteractiveConfigurationCreating();
     }
 
+    std::cout << "========================================";
+
+    std::cout << "\n!!! | PLEASE MAKE SURE THAT NO ONE PROGRAM INTERFERES DURING SYNCHRONIZATION | !!!\n";
+    std::cout << "!!! | PRESS ANY KEY TO CONTINUE... | !!!\n";
+
+    std::cout << "========================================\n\n";
+
+    std::cin.get();
+
     synchronization_logic::StartCopyProcess(data);
 
 

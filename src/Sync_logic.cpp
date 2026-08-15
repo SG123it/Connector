@@ -4,10 +4,10 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 {
     std::unordered_map<std::string, bool> synchronization_status;
 
-    std::cout << "\nSynchronization started...";
+    std::cout << "\n========================================\n";
+    std::cout << "Synchronization started..." << std::endl;
 
     for (auto Child_CFG : parent_CFG.Child_objects) {
-        std::cout << "\n\nChild object: " << Child_CFG;
 
         for (auto& file : std::filesystem::recursive_directory_iterator(parent_CFG.path)) {
             if (file.path().filename() == CFG_worker::Standart_CFG_Name) continue;
@@ -27,7 +27,11 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
             }
         }
         
+        std::cout << "FINISHED: " << Child_CFG << std::endl;
 
     }
+
+    std::cout << "Synchronization finished!" << std::endl;
+    std::cout << "========================================\n";
 
 }
