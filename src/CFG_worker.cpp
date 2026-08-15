@@ -63,6 +63,7 @@ bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
 bool CFG_worker::WriteToCFGFile(Configuration_Data data)
 {
     nlohmann::json JsonData;
+    std::vector<std::filesystem::path> DatesOfFiles;
 
     std::filesystem::path path = data.path;
     path /= Standart_CFG_Name;
@@ -81,6 +82,16 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
         return false;
     }
 
+    for (auto& el : std::filesystem::recursive_directory_iterator(path.parent_path())) {
+        DatesOfFiles.push_back(el.path());
+    }
+    for (int i = 0; i < DatesOfFiles.size(); i++) {
+        if (DatesOfFiles[i].filename().string() == Standart_CFG_Name) continue;
+
+        JsonData["DateOfLastChange"][std::to_string(i)]["path"] = DatesOfFiles[i];
+        JsonData["DateOfLastChange"][std::to_string(i)]["date"] = static_cast<long long int>(std::filesystem::last_write_time(DatesOfFiles[i]).time_since_epoch().count());
+    }
+
     //-----------------------------
 
     if (data.type == "Parent") {
@@ -90,15 +101,6 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
             JsonData["Child"][std::to_string(i)]["path"] = data.Child_objects[i];
         }
 
-        for (auto& el : std::filesystem::recursive_directory_iterator(path.parent_path())) {
-            paths.push_back(el.path());
-        }
-        for (int i = 0; i < paths.size(); i++) {
-            if (paths[i].filename().string() == Standart_CFG_Name) continue;
-
-            JsonData["DateOfLastChange"][std::to_string(i)]["path"] = paths[i];
-            JsonData["DateOfLastChange"][std::to_string(i)]["date"] = static_cast<long long int>(std::filesystem::last_write_time(paths[i]).time_since_epoch().count());
-        }
     }
 
     JsonData["type"] = data.type;
