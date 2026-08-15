@@ -1,0 +1,14 @@
+Авторы и правообладатель:
+
+Проект разработан и поддерживается SG123it 
+https://github.com/SG123it.
+
+
+Copyright
+© SG123it — 2026. Все права защищены.
+Лицензия проекта: `licence.md`
+
+
+В проекте используются сторонние библиотеки, у каждой из них — собственные условия лицензирования:
+- `Include/Clogs/LICENSE.txt` (Copyright (c) 2026 SG123it)
+- `Include/JSON/LICENSE.MIT` (Copyright (c) 2013-2026 Niels Lohmann)
