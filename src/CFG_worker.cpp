@@ -83,6 +83,8 @@ bool CFG_worker::WriteToCFGFile(Configuration_Data data)
     }
 
     for (auto& el : std::filesystem::recursive_directory_iterator(path.parent_path())) {
+        if (el.is_directory()) continue;
+        
         DatesOfFiles.push_back(el.path());
     }
     for (int i = 0; i < DatesOfFiles.size(); i++) {
