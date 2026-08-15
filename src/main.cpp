@@ -28,6 +28,8 @@ int main(int argc, char* argv[]) {
         data = CFG_worker::InteractiveConfigurationCreating();
     }
 
+    synchronization_logic::StartCopyProcess(data);
+
 
     return 0;
 }
