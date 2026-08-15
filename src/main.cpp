@@ -29,9 +29,12 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << "========================================";
-
+    std::cout << "\nCOPY FROM: " << data.path << std::endl;
+    for (auto el : data.Child_objects) {
+        std::cout << "TO: " << el << std::endl;
+    }
     std::cout << "\n!!! | PLEASE MAKE SURE THAT NO ONE PROGRAM INTERFERES DURING SYNCHRONIZATION | !!!\n";
-    std::cout << "!!! | PRESS ANY KEY TO CONTINUE... | !!!\n";
+    std::cout << "!!! | PRESS ANY KEY TO CONTINUE... | !!!\n\n";
 
     std::cout << "========================================\n\n";
 
