@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
     }
 
     std::cout << "========================================";
-    std::cout << "\nCOPY FROM: " << data.path << std::endl;
+    std::cout << "\nSync FROM: " << data.path << std::endl;
     for (auto el : data.Child_objects) {
         std::cout << "TO: " << el << std::endl;
     }
@@ -41,6 +41,9 @@ int main(int argc, char* argv[]) {
     std::cin.get();
 
     synchronization_logic::StartCopyProcess(data);
+    
+    std::cout << "\nPress any key to exit...\n";
+    std::cin.get();
 
 
     return 0;
