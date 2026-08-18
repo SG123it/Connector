@@ -5,7 +5,6 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
     std::unordered_map<std::string, bool> synchronization_status;
 
     std::cout << "Synchronization started..." << std::endl;
-    std::cout << "\n========================================\n";
 
     for (auto Child_CFG : parent_CFG.Child_objects) {
         
@@ -25,6 +24,7 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 
 bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path)
 {
+    std::cout << "\n[1/2 step] Copy\n";
 
     //[1/2] Синхронизация с дочерними объектами: копирование файлов
     try {
@@ -38,10 +38,12 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
                 std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
             } catch(std::filesystem::filesystem_error& err) {
                 std::cout << "\nError: Unable to sync file: " << file.string() << std::endl;
-                std::cout << "Err.what(): " << err.what() << std::endl;
+                std::cout << "Err.what(): " << err.what() << std::endl << std::endl;
 
                 continue;
             }
+
+            std::cout << "File synced: " << file << std::endl;
         }
     } catch(std::filesystem::filesystem_error& err) {
         std::cout << "\nUnknown sync error(step [1/2])" << std::endl;
@@ -56,6 +58,8 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
 
 bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path)
 {
+    std::cout << "\n[2/2 step] Remove\n";
+
     //[2/2] Синхронизация с дочерними объектами: удаление файлов / папок
     //Проверка файла в дочерней директории на наличие в родительской:
     //Если файл существует: всё ок

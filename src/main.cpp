@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
         data = CFG_worker::InteractiveConfigurationCreating();
     }
 
+    std::cout << "\n\n\n";
     std::cout << "========================================";
     std::cout << "\nSync FROM: " << data.path << std::endl;
     for (auto el : data.Child_objects) {
@@ -35,9 +36,6 @@ int main(int argc, char* argv[]) {
     }
     std::cout << "\n!!! | PLEASE MAKE SURE THAT NO ONE PROGRAM INTERFERES DURING SYNCHRONIZATION | !!!\n";
     std::cout << "!!! | PRESS ANY KEY TO CONTINUE... | !!!\n\n";
-
-    std::cout << "========================================\n\n";
-
     std::cin.get();
 
     synchronization_logic::StartCopyProcess(data);
