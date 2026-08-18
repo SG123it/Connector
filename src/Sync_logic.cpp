@@ -11,12 +11,19 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 
         //[1/2] Синхронизация с дочерними объектами: копирование файлов
         for (auto& file : std::filesystem::recursive_directory_iterator(parent_CFG.path)) {
-            //Child path + относительный путь до файла от parent path
-            std::filesystem::path CopyTo = Child_CFG / std::filesystem::relative(file, parent_CFG.path);
-
             if (file.path().filename() == CFG_worker::Standart_CFG_Name) continue;
 
-            std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
+            try {
+                //Child path + относительный путь до файла от parent path
+                std::filesystem::path CopyTo = Child_CFG / std::filesystem::relative(file, parent_CFG.path);
+
+                std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
+            } catch(std::filesystem::filesystem_error& err) {
+                std::cout << "\nError: Unable to sync file: " << file.path().string() << std::endl;
+                std::cout << "Err.what()" << err.what() << std::endl;
+
+                continue;
+            }
         }
 
         //[2/2] Синхронизация с дочерними объектами: удаление файлов / папок
@@ -26,13 +33,18 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
         for (auto& file : std::filesystem::recursive_directory_iterator(Child_CFG)) {
             if (file.path().filename() == CFG_worker::Standart_CFG_Name) continue;
 
-            std::filesystem::path CheckExistFile = parent_CFG.path / std::filesystem::relative(file, Child_CFG);
+            if (!std::filesystem::exists(parent_CFG.path / std::filesystem::relative(file, Child_CFG))) {
 
-            if (!std::filesystem::exists(CheckExistFile)) {
-                std::filesystem::remove(file);
-                std::cout << "\nRemoved: "  << file.path().string() << std::endl;
+                try {
+                    std::filesystem::remove(file);
+                    std::cout << "\nRemoved: "  << file.path().string() << std::endl;
+                } catch(std::filesystem::filesystem_error& err) {
+                    std::cout << "\nError: Unable to remove: " << file.path().string() << std::endl;
+                    std::cout << "Err.what()" << err.what() << std::endl;
+
+                    continue;
+                }
             }
-
         }
         
         std::cout << "FINISHED: " << Child_CFG << std::endl;
