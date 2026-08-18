@@ -12,15 +12,17 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
         //[1/2] Синхронизация с дочерними объектами: копирование файлов
         for (auto& file : std::filesystem::recursive_directory_iterator(parent_CFG.path)) {
             if (file.path().filename() == CFG_worker::Standart_CFG_Name) continue;
+            std::error_code error_code;
 
             try {
                 //Child path + относительный путь до файла от parent path
                 std::filesystem::path CopyTo = Child_CFG / std::filesystem::relative(file, parent_CFG.path);
 
-                std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
+                std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, error_code);
             } catch(std::filesystem::filesystem_error& err) {
                 std::cout << "\nError: Unable to sync file: " << file.path().string() << std::endl;
                 std::cout << "Err.what()" << err.what() << std::endl;
+                std::cout << "std::error code variable: " << error_code.value() << std::endl;
 
                 continue;
             }
@@ -32,6 +34,7 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
         //Если не существует - значит был удалён: надо удалить
         for (auto& file : std::filesystem::recursive_directory_iterator(Child_CFG)) {
             if (file.path().filename() == CFG_worker::Standart_CFG_Name) continue;
+            std::error_code error_code;
 
             if (!std::filesystem::exists(parent_CFG.path / std::filesystem::relative(file, Child_CFG))) {
 
@@ -41,6 +44,7 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
                 } catch(std::filesystem::filesystem_error& err) {
                     std::cout << "\nError: Unable to remove: " << file.path().string() << std::endl;
                     std::cout << "Err.what()" << err.what() << std::endl;
+                    std::cout << "std::error code variable: " << error_code.value() << std::endl;
 
                     continue;
                 }
