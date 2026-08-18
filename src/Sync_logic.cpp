@@ -20,9 +20,11 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 
                 std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive, error_code);
             } catch(std::filesystem::filesystem_error& err) {
+                std::cout << "\n------------------------------\n";
                 std::cout << "\nError: Unable to sync file: " << file.path().string() << std::endl;
-                std::cout << "Err.what()" << err.what() << std::endl;
-                std::cout << "std::error code variable: " << error_code.value() << std::endl;
+                std::cout << "Err.what(): " << err.what() << std::endl;
+                std::cout << "std::error code variable: " << error_code.value();
+                std::cout << "\n------------------------------\n";
 
                 continue;
             }
@@ -42,9 +44,11 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
                     std::filesystem::remove(file);
                     std::cout << "\nRemoved: "  << file.path().string() << std::endl;
                 } catch(std::filesystem::filesystem_error& err) {
-                    std::cout << "\nError: Unable to remove: " << file.path().string() << std::endl;
-                    std::cout << "Err.what()" << err.what() << std::endl;
-                    std::cout << "std::error code variable: " << error_code.value() << std::endl;
+                    std::cout << "\n------------------------------\n";
+                    std::cout << "Error: Unable to remove: " << file.path().string() << std::endl;
+                    std::cout << "Err.what(): " << err.what() << std::endl;
+                    std::cout << "std::error code variable: " << error_code.value();
+                    std::cout << "\n------------------------------\n";
 
                     continue;
                 }
