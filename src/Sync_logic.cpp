@@ -30,7 +30,8 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
     try {
         for (auto& file : GetDirectoryFiles(parent_CFG.path)) {
             if (file.filename() == CFG_worker::Standart_CFG_Name) continue;
-
+            if (std::filesystem::is_directory(file)) continue;
+            
             try {
                 //Child path + относительный путь до файла от parent path
                 std::filesystem::path CopyTo = Child_CFG_path / std::filesystem::relative(file, parent_CFG.path);
