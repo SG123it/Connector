@@ -13,4 +13,5 @@ private:
     static bool secondstep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path);
 
     static std::vector<std::filesystem::path> GetDirectoryFiles(std::filesystem::path path);
+    static std::vector<std::filesystem::path> recursive_GetDirectoryFiles(std::filesystem::path path);
 };

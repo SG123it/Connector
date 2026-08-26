@@ -93,7 +93,7 @@ bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG
 
 }
 
-std::vector<std::filesystem::path> synchronization_logic::GetDirectoryFiles(std::filesystem::path path)
+std::vector<std::filesystem::path> synchronization_logic::recursive_GetDirectoryFiles(std::filesystem::path path)
 {
 
     //Это специальная функция для получения всех файлов из директории(рекурсивно). Причина по которой реализация именно такая - ошибка когда рекуртивный итератор пытается прочитать такие папки как System Volume Information
@@ -103,6 +103,41 @@ std::vector<std::filesystem::path> synchronization_logic::GetDirectoryFiles(std:
     std::error_code error_code;
 
     auto iterator = std::filesystem::recursive_directory_iterator(
+        path,
+        std::filesystem::directory_options::skip_permission_denied,
+        error_code
+    );
+
+    if (error_code) {
+        return files;
+    }
+
+    auto end = std::filesystem::end(iterator);
+
+    while (iterator != end) {
+        files.push_back(iterator->path());
+        
+        error_code.clear();
+        iterator.increment(error_code);
+
+        if (error_code) {
+            continue;
+        }
+    }
+
+    return files;
+}
+
+std::vector<std::filesystem::path> synchronization_logic::GetDirectoryFiles(std::filesystem::path path)
+{
+
+    //Это специальная функция для получения всех файлов из директории(рекурсивно). Причина по которой реализация именно такая - ошибка когда рекуртивный итератор пытается прочитать такие папки как System Volume Information
+    //Эта функция должна исправить эту ошибку.
+
+    std::vector<std::filesystem::path> files;
+    std::error_code error_code;
+
+    auto iterator = std::filesystem::directory_iterator(
         path,
         std::filesystem::directory_options::skip_permission_denied,
         error_code
