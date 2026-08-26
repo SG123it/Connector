@@ -35,8 +35,8 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
                 //Child path + относительный путь до файла от parent path
                 std::filesystem::path CopyTo = Child_CFG_path / std::filesystem::relative(file, parent_CFG.path);
                 std::filesystem::copy(file, CopyTo, std::filesystem::copy_options::update_existing | std::filesystem::copy_options::recursive);
-                
-                std::cout << "File synced: " << file << std::endl;
+
+                std::cout << "Iterator object synced: " << file << std::endl;
             } catch(std::filesystem::filesystem_error& err) {
                 std::cout << "\nError: Unable to sync file: " << file.string() << std::endl;
                 std::cout << "Err.what(): " << err.what() << std::endl << std::endl;
