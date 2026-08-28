@@ -75,10 +75,19 @@ bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG
             if (!std::filesystem::exists(parent_CFG.path / std::filesystem::relative(file, Child_CFG_path))) {
 
                 try {
-                    std::filesystem::remove(file);
-                    std::cout << "\nRemoved: "  << file.string() << std::endl;
+
+                    if (!std::filesystem::is_directory(file)) {
+                        std::filesystem::remove(file);
+                        std::cout << "\nRemoved: "  << file.string() << std::endl;
+                    }
+                    else {
+                        std::filesystem::remove_all(file);
+                        std::cout << "\nRemoved: "  << file.string() << std::endl;
+                    }
+                    
                 } catch(std::filesystem::filesystem_error& err) {
                     std::cout << "\nError: Unable to remove: " << file.string() << std::endl;
+                    std::cout << "Is directory == " << std::filesystem::is_directory(file) << std::endl;
                     std::cout << "Err.what(): " << err.what() << std::endl;
 
                     continue;
