@@ -8,7 +8,10 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 
     for (auto Child_CFG : parent_CFG.Child_objects) {
         
+        //Запуск первого шага из двух (копирование недостающих файлов из родительской директории)
         firststep(parent_CFG, Child_CFG);
+
+        //Запуск второго шага (удаление файлов отсутствующих в родительской директории)
         secondstep(parent_CFG, Child_CFG);
 
         
@@ -24,6 +27,7 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 
 bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path)
 {
+    std::cout << "\n---------------------------------";
     std::cout << "\n[1/2 step] Copy\n";
 
     //[1/2] Синхронизация с дочерними объектами: копирование файлов
@@ -57,6 +61,7 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
 
 bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path)
 {
+    std::cout << "\n---------------------------------";
     std::cout << "\n[2/2 step] Remove\n";
 
     //[2/2] Синхронизация с дочерними объектами: удаление файлов / папок
