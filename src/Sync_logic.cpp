@@ -15,13 +15,12 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
         secondstep(parent_CFG, Child_CFG);
 
         
-        std::cout << "\n\nFINISHED: " << Child_CFG << std::endl;
+        std::cout << "\n\nFINISHED: " << Child_CFG;
+        std::cout << "\n========================================\n\n";
 
     }
 
-    
-    std::cout << "\n========================================\n";
-    std::cout << "Synchronization finished!" << std::endl;
+    std::cout << "\n\n\nSynchronization finished!" << std::endl;
 
 }
 
