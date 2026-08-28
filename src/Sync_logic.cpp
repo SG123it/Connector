@@ -8,22 +8,25 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
 
     for (auto Child_CFG : parent_CFG.Child_objects) {
         
+        //Запуск первого шага из двух (копирование недостающих файлов из родительской директории)
         firststep(parent_CFG, Child_CFG);
+
+        //Запуск второго шага (удаление файлов отсутствующих в родительской директории)
         secondstep(parent_CFG, Child_CFG);
 
         
-        std::cout << "\n\nFINISHED: " << Child_CFG << std::endl;
+        std::cout << "\n\nFINISHED: " << Child_CFG;
+        std::cout << "\n========================================\n\n";
 
     }
 
-    
-    std::cout << "\n========================================\n";
-    std::cout << "Synchronization finished!" << std::endl;
+    std::cout << "\n\n\nSynchronization finished!" << std::endl;
 
 }
 
 bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path)
 {
+    std::cout << "\n---------------------------------";
     std::cout << "\n[1/2 step] Copy\n";
 
     //[1/2] Синхронизация с дочерними объектами: копирование файлов
@@ -57,6 +60,7 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
 
 bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG, std::filesystem::path Child_CFG_path)
 {
+    std::cout << "\n---------------------------------";
     std::cout << "\n[2/2 step] Remove\n";
 
     //[2/2] Синхронизация с дочерними объектами: удаление файлов / папок
@@ -70,10 +74,19 @@ bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG
             if (!std::filesystem::exists(parent_CFG.path / std::filesystem::relative(file, Child_CFG_path))) {
 
                 try {
-                    std::filesystem::remove(file);
-                    std::cout << "\nRemoved: "  << file.string() << std::endl;
+
+                    if (!std::filesystem::is_directory(file)) {
+                        std::filesystem::remove(file);
+                        std::cout << "\nRemoved: "  << file.string() << std::endl;
+                    }
+                    else {
+                        std::filesystem::remove_all(file);
+                        std::cout << "\nRemoved: "  << file.string() << std::endl;
+                    }
+                    
                 } catch(std::filesystem::filesystem_error& err) {
                     std::cout << "\nError: Unable to remove: " << file.string() << std::endl;
+                    std::cout << "Is directory == " << std::filesystem::is_directory(file) << std::endl;
                     std::cout << "Err.what(): " << err.what() << std::endl;
 
                     continue;
