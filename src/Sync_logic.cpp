@@ -7,6 +7,14 @@ void synchronization_logic::StartCopyProcess(CFG_worker::Configuration_Data pare
     std::cout << "Synchronization started..." << std::endl;
 
     for (auto Child_CFG : parent_CFG.Child_objects) {
+        if (!std::filesystem::exists(Child_CFG) || !std::filesystem::is_directory(Child_CFG)) {
+            std::cout << "\nError! object not found or object is file: " << Child_CFG << std::endl;
+            continue;
+        }
+        if (Child_CFG == parent_CFG.path) {
+            std::cout << "\nWarning! identical objects. SKIP\n";
+            continue;
+        }
         
         //Запуск первого шага из двух (копирование недостающих файлов из родительской директории)
         firststep(parent_CFG, Child_CFG);

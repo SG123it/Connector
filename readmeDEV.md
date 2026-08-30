@@ -1,7 +1,7 @@
 <h2><b>
 <ul>
 
-<li> Название конфигурационного файла: ConnectorConfig.jccf (json connector configuration file)
+<li> Название конфигурационного файла: ConnectorConfig.jccf
 <li> Стандарт конфигурационного файла:
 
 
