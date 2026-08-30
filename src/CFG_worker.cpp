@@ -10,16 +10,10 @@ bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
         std::cout << "Error: Unable to find path or path object is directory: " << path.string() << std::endl;
         return false;
     }
-    else {
-        std::cout << "The file has been successfully found: " << path.string() << std::endl;
-    }
 
     if(TransformToLower(path.extension().string()) != ".jccf") {
         std::cout << "Error: Extension != .jccf: " << path.string() << std::endl;
         return false;
-    }
-    else {
-        std::cout << "Extension: .jccf: " << path.string() << std::endl;
     }
 
     //--------------------------
@@ -41,6 +35,7 @@ bool CFG_worker::CheckConfigurationFile(std::filesystem::path path)
         }
     }
 
+    std::cout << "\nConfiguration file has been successfully checked\n";
     return true;
 }
 
@@ -112,9 +107,11 @@ CFG_worker::Configuration_Data CFG_worker::GetConfigurationData(std::filesystem:
     FileRead.close();
 
     Return_data.type = JsonData["type"];
+    if (Return_data.type != "Parent" && Return_data.type != "Child") throw std::runtime_error("Error! Unknown type: " + Return_data.type);
     std::cout << "Type detected: " << Return_data.type << std::endl;
 
     Return_data.path = JsonData["path"];
+    if (!std::filesystem::exists(Return_data.path) || !std::filesystem::is_directory(Return_data.path)) throw std::runtime_error("Error! path not found or path is file: " + Return_data.path);
     std::cout << "Path detected: " << Return_data.path << std::endl;
 
     if (Return_data.type == "Parent") {
