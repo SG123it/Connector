@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.10...3.20)
 #-----------------
 set(P_NAME "Connector")
-set(P_VER 1.4)
+set(P_VER 1.5)
 #-----------------
 project(${P_NAME} VERSION ${P_VER})
 
