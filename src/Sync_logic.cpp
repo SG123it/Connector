@@ -39,7 +39,7 @@ bool synchronization_logic::firststep(CFG_worker::Configuration_Data parent_CFG,
 
     //[1/2] Синхронизация с дочерними объектами: копирование файлов
     try {
-        for (auto& file : GetDirectoryFiles(parent_CFG.path)) {
+        for (auto& file : recursive_GetDirectoryFiles(parent_CFG.path)) {
             if (file.filename() == CFG_worker::Standart_CFG_Name) continue;
             
             try {
@@ -76,7 +76,7 @@ bool synchronization_logic::secondstep(CFG_worker::Configuration_Data parent_CFG
     //Если файл существует: всё ок
     //Если не существует - значит был удалён: надо удалить
     try {
-        for (auto& file : GetDirectoryFiles(Child_CFG_path)) {
+        for (auto& file : recursive_GetDirectoryFiles(Child_CFG_path)) {
             if (file.filename() == CFG_worker::Standart_CFG_Name) continue;
 
             if (!std::filesystem::exists(parent_CFG.path / std::filesystem::relative(file, Child_CFG_path))) {
